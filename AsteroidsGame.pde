@@ -31,12 +31,13 @@ void setup() {
 }
 
 void draw() {
+background(0,0,0);
   pushMatrix();
   translate(-4550, -2900, -5000); //move stars and background behind asteroid
   scale(9.3, 9.3);
-  fill(0, 0, 0, 140); //create blurred effect while refreshing frame
-  noStroke();
-  rect(0, 0, 1100, 700);
+  //fill(0, 0, 0, 140); //create blurred effect while refreshing frame
+  //noStroke();
+  //rect(0, 0, 1100, 700);
   for (int i=0; i<30; i++) { //draw stars
     streaks[i].paint();
   }

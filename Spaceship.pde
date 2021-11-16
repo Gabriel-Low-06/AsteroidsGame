@@ -41,7 +41,6 @@ class Spaceship extends Floater {
       fill(255, 0, 0);
       triangle(-40, 7, -40, -7, -57, 0); //draw fire from ship
     }
-    popMatrix();
   }
 
   int getX() {

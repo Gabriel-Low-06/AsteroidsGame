@@ -2,7 +2,7 @@
 class Spaceship extends Floater {
   protected boolean follower;
   Spaceship(int x, int y, boolean followee) {
-    myColor = color(255, 255, 255);
+    myColor = color(254, 254, 254);
     myCenterX=x;
     myCenterY=y;
     myXspeed=0;
@@ -30,7 +30,7 @@ class Spaceship extends Floater {
     triangle(25, 5, 25, -5, 45, 0);
     triangle(10, 0, -10, 40, -10, -40); //draw ship
     triangle(-20, 0, -35, 30, -35, -30); //draw ship
-    fill(1, 1, 254);
+    fill(1, 1, 180);
     if(follower==true){
       fill(100,100,100);
     }

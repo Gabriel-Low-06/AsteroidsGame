@@ -1,6 +1,6 @@
 class Stars //note that this class does NOT extend Floater
 {
-class Stars {
+
   protected float x, y; //self explantory local viarables
   protected int mycolor, twinkle;
   protected float s = (int)random(0, 3);
@@ -23,4 +23,4 @@ class Stars {
     ellipse(x, y, s, s); //draw star
   }
 }
-}
+

@@ -107,11 +107,11 @@ background(0,0,0);
   }
   fill(255,255,255);
   textSize(30);
-  text(myhealth, 1010, 50); //display health
+  text(myhealth, 10120, 35); //display health
   stroke(0,0,0);
   rect(890,30,100,20);
-  fill(255,0,0);
   noStroke();
+  fill(255,0,0);
   rect(890,30,myhealth,20);
 }
 

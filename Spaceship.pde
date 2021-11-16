@@ -1,5 +1,4 @@
-class Spaceship extends Floater  
-{   
+
 class Spaceship extends Floater {
   protected boolean follower;
   Spaceship(int x, int y, boolean followee) {
@@ -94,4 +93,4 @@ class Spaceship extends Floater {
     myYspeed*=.9;
   }
 }
-}
+

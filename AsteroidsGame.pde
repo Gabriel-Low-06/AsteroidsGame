@@ -42,7 +42,7 @@ background(0,0,0);
     streaks[i].paint();
   }
   scale(7,7);
-  translate(-550,-350);
+  translate(-550,-350,1);
   for (int i=0; i<complexity; i++) { //draw planets in background
     systems[i].gravity(i);
     systems[i].move();
@@ -108,10 +108,9 @@ background(0,0,0);
   fill(255,255,255);
   textSize(30);
   text(myhealth, 1020, 35); //display health
-  stroke(0,0,0);
+  strokeWeight(0);
   rect(890,30,100,20);
-  stroke(199,1,1);
-  fill(199,1,1,255);
+  fill(199,1,1);
   rect(890,30,myhealth,20);
 }
 

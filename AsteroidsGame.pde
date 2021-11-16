@@ -111,7 +111,7 @@ background(0,0,0);
   stroke(0,0,0);
   rect(890,30,100,20);
   stroke(199,1,1);
-  fill(1991,1);
+  fill(199,1,1,255);
   rect(890,30,myhealth,20);
 }
 

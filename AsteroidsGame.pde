@@ -105,13 +105,13 @@ background(0,0,0);
     blasts[z].show();
     blasts[z].scan();
   }
-  fill(255,255,255);
+  fill(0,0,0);
   textSize(30);
   text(myhealth, 1020, 35); //display health
   strokeWeight(0);
   rect(890,30,100,20);
   fill(199,1,1);
-  rect(890,30,myhealth,20);
+  rect(890,30,(int)myhealth,20);
 }
 
 class BaseObj {

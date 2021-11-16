@@ -34,6 +34,7 @@ class Spaceship extends Floater {
     if(follower==true){
       fill(100,100,100);
     }
+    noStroke();
     ellipse(25, 0, 20, 10);
     if ((follower==false && keyPressed==true && keyCode==UP)||follower==true && myXspeed!=0) {
       fill(255, 0, 0);

@@ -105,12 +105,12 @@ background(0,0,0);
     blasts[z].show();
     blasts[z].scan();
   }
-  fill(0,0,0);
+  fill(0,300,0);
   textSize(30);
   text(myhealth, 1020, 35); //display health
   strokeWeight(0);
   rect(890,30,100,20);
-  fill(199,1,1);
+  fill(300,0,0);
   rect(890,30,(int)myhealth,20);
 }
 

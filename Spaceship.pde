@@ -30,10 +30,10 @@ class Spaceship extends Floater {
     triangle(25, 5, 25, -5, 45, 0);
     triangle(10, 0, -10, 40, -10, -40); //draw ship
     triangle(-20, 0, -35, 30, -35, -30); //draw ship
+    fill(1, 1, 254);
     if(follower==true){
       fill(100,100,100);
     }
-    fill(1, 1, 254);
     ellipse(25, 0, 20, 10);
     if ((follower==false && keyPressed==true && keyCode==UP)||follower==true && myXspeed!=0) {
       fill(255, 0, 0);

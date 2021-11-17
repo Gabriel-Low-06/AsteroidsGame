@@ -133,8 +133,8 @@ class BaseObj {
   }
   
   public void setrandomly(){
-    float[] locset = {random(0,1100),random(0,700),random(0,-500)}; loc=locset;
-    float[] velset = {random(-1,1),random(-1,1),random(-1,1)}; vel=velset;
+    float[] locset = {random(0,1100),random(0,700),random(-100,100)}; loc=locset;
+    float[] velset = {random(-1,1),random(-1,1),random(0,0)}; vel=velset;
     float[] rotset = {random(-8,8),random(-8,8),random(-8,8)}; rot=rotset;
     float[] torset = {random(-.01,.01),random(-.01,.01),random(-.01,.01)}; tor=torset;
   }

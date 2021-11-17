@@ -35,9 +35,6 @@ background(0,0,0);
   pushMatrix();
   translate(-4550, -2900, -5000); //move stars and background behind asteroid
   scale(9.3, 9.3);
-  //fill(0, 0, 0, 140); //create blurred effect while refreshing frame
-  //noStroke();
-  //rect(0, 0, 1100, 700);
   for (int i=0; i<30; i++) { //draw stars
     streaks[i].paint();
   }
@@ -54,7 +51,7 @@ background(0,0,0);
     if (rocks[q].getExstatus()>0) { //if hit, explode asteroids
       rocks[q].explode();
     }
-    if (rocks[q].getExstatus()<200) {
+    if (rocks[q].getExstatus()<400) {
        rocks[q].render(); //draw asteroids and enemy ships
       rocks[q].extrastuff(q); //steer enemy ship
     }
@@ -94,6 +91,9 @@ background(0,0,0);
   
    Jeremiah.show(); 
   Jeremiah.move();  
+  Jeremiah.setX(constrain(Jeremiah.getX(),50,1050));
+    Jeremiah.setY(constrain(Jeremiah.getY(),50,650));
+
   for(int i=0; i<6; i++){
     Fleet[i].show();
     Fleet[i].follow(Jeremiah,(int)(((i+2)%2*100*((i+2)/2))-(50*((i+2)/2))),((i/2)+1)*80);
@@ -171,17 +171,18 @@ class Asteroid extends BaseObj {
     exstatus=0;
   }
   void show() {
-    noStroke();
+    strokeWeight(1);
+    stroke(0,0,0);
     if (loc[0]>1150||loc[0]<-50||loc[1]>750||loc[1]<-50) { //portal through outside edges
       loc[0]=(550-loc[0])+ 550;
       loc[1]=(350-loc[1]) + 350;
     }
-    fill(shade, shade, shade);
+    fill(shade+exstatus, shade-exstatus, shade-exstatus, 255-exstatus);
     sphereDetail(7); //control resolution of asteroid
     sphere(20); //draw asteroid
     translate(config[0], config[1], 0);
     sphere(config[2]/2);
-    if (exstatus>0) {
+    if (exstatus>0 && exstatus<180) {
         noFill();
         strokeWeight(4);
         stroke(255, 255, 255);
@@ -226,8 +227,8 @@ class Enemy extends BaseObj {
   }
 
   void extrastuff(int value) {
-    float xshift=(Jeremiah.getX()-loc[0])*.004;
-    float yshift=(Jeremiah.getY()-loc[1])*.004;
+    float xshift=(Jeremiah.getX()-loc[0])*.002;
+    float yshift=(Jeremiah.getY()-loc[1])*.002;
     float angle=atan(yshift/xshift);
     if (xshift<0) {
       angle+=3.1415;
@@ -236,8 +237,8 @@ class Enemy extends BaseObj {
       vel[0]+=xshift;
       vel[1]+=yshift;
     } else if (dist(loc[0], loc[1], Jeremiah.getX(), Jeremiah.getY())<100) { //if too close, retreat
-      vel[0]-= 1-xshift;
-      vel[1]-= 1-yshift;
+      vel[0]-= .6-xshift;
+      vel[1]-= .6-yshift;
     }
     if (millis()%600<5) { //occasionally, fire lasers at ship
       blasts[Lasercount]=new Lasers(value, angle);
@@ -247,6 +248,7 @@ class Enemy extends BaseObj {
         Lasercount=0;
       }
     }
+    for(int i=0; i<3; i++){vel[i]=constrain(vel[i],-3,3);}
   }
   void explode() { //if exploded, blast composite asteroids apart
     exstatus+=4;
@@ -317,7 +319,7 @@ class Celestial {
       ellipse(x,y,s+18,s+18);
       //fill(255, 100, 50,100);
       //ellipse(x,y,s+22,s+22);
-      image(Sun,x-20,y-20,40,40);
+      //image(Sun,x-20,y-20,40,40);
       
       //fill(255, 150, 50,150);
       //ellipse(x,y,s+8,s+8);

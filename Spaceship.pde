@@ -52,6 +52,12 @@ class Spaceship extends Floater {
   int getY() {
     return (int)myCenterY;
   }
+   void setX(int x){
+    myCenterX=x;
+  }
+  void setY(int y){
+    myCenterY=y;
+  }
   float getTheta() {
     return (float)myPointDirection;
   }

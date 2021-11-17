@@ -27,6 +27,7 @@ class Spaceship extends Floater {
     rotate((float)myPointDirection*(3.1415/180));
     noStroke();
     quad(25, 5, 25, -5, -40, -10, -40, 10); //draw ship
+    triangle(25, 5, 25, -5, 45, 0);
     triangle(10, 0, -10, 40, -10, -40); //draw ship
     triangle(-20, 0, -35, 30, -35, -30); //draw ship
     fill(1, 1, 180);
@@ -35,8 +36,9 @@ class Spaceship extends Floater {
     }
     stroke(1,1,190);
     strokeWeight(5);
-    triangle(25, 5, 25, -5, 45, 0);
-
+    translate(0,0,1);
+    ellipse(25,0,20,10);
+    
     if ((follower==false && keyPressed==true && keyCode==UP)||follower==true && myXspeed!=0) {
       fill(255, 0, 0);
       triangle(-40, 7, -40, -7, -57, 0); //draw fire from ship
@@ -91,8 +93,8 @@ class Spaceship extends Floater {
   }
 
   public void slow() {
-    myXspeed*=.9;
-    myYspeed*=.9;
+    myXspeed*=.94;
+    myYspeed*=.94;
   }
 }
 

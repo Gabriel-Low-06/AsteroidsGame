@@ -177,7 +177,7 @@ class Asteroid extends BaseObj {
       loc[0]=(550-loc[0])+ 550;
       loc[1]=(350-loc[1]) + 350;
     }
-    fill(shade+exstatus, shade-exstatus, shade-exstatus, 255-exstatus);
+    fill(shade-(exstatus/2), shade-exstatus, shade-exstatus, 255-exstatus);
     sphereDetail(7); //control resolution of asteroid
     sphere(20); //draw asteroid
     translate(config[0], config[1], 0);

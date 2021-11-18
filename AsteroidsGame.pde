@@ -66,7 +66,9 @@ background(0,0,0);
     if (keyCode==UP) {
       Jeremiah.accelerate(.1); 
     }
-    if (keyCode==ENTER) { //teleports ship to new location
+    if (keyCode==ENTER) { //teleports ship to new location\
+      Jeremiah.hyperspace();
+      keyCode=0;
     }
     if (keyCode==DOWN) { //fires lasers
       blasts[Lasercount]=new Lasers();
@@ -179,7 +181,7 @@ class Asteroid extends BaseObj {
       loc[0]=(550-loc[0])+ 550;
       loc[1]=(350-loc[1]) + 350;
     }
-    fill(shade-(exstatus/2), shade-exstatus, shade-exstatus, 255-exstatus);
+    fill(shade-(exstatus/3), shade-exstatus, shade-exstatus);
     sphereDetail(7); //control resolution of asteroid
     sphere(20); //draw asteroid
     translate(config[0], config[1], 0);
@@ -190,11 +192,12 @@ class Asteroid extends BaseObj {
         stroke(255, 255, 255);
         ellipse(-(config[0]/2), -(config[1]/2), exstatus, exstatus);
       }
-      if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<20 && hityet==false){ // if laser hits ship, lower health
+      if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<60 && hityet==false){ // if laser hits ship, lower health
       myhealth-=5;
-      x=1200;
-      velocity=0;
       hityet = true;
+      Jeremiah.sethit(50);
+    }else if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())>60 && hityet==true){
+      hityet=false;
     }
   }
   int getExstatus() {
@@ -220,6 +223,7 @@ class Enemy extends BaseObj {
     for(int i=0; i<3; i++){vel[i]=0;}
   }
   void show() {
+    if(exstatus<200){
     noStroke();
     sphereDetail(15); //if initialized as Enemy, draw Enemey
     fill(255, 00, 0);
@@ -231,6 +235,7 @@ class Enemy extends BaseObj {
     if (exstatus>0) {
       fill(255, 0, 0);
       sphere(exstatus/1.5);
+    }
     }
   }
 
@@ -248,7 +253,7 @@ class Enemy extends BaseObj {
       vel[0]-= .6-xshift;
       vel[1]-= .6-yshift;
     }
-    if (millis()%600<5) { //occasionally, fire lasers at ship
+    if (millis()%300<5) { //occasionally, fire lasers at ship
       blasts[Lasercount]=new Lasers(value, angle);
       realLasercount=(constrain(realLasercount+1, 0, 40));
       Lasercount+=1;
@@ -407,7 +412,16 @@ class Lasers extends Stars{
     if(dist(x,y,Jeremiah.getX(),Jeremiah.getY())<20){ // if laser hits ship, lower health
       myhealth-=5;
       x=1200;
+      Jeremiah.sethit(50);
       velocity=0;
+    }
+    for(int i=0; i<6;i++){
+      if(dist(x,y,Fleet[i].getX(),Fleet[i].getY())<20){ // if laser hits ship, lower health
+      Fleet[i].sethealth(0);
+      x=1200;
+      Fleet[i].sethit(50);
+      velocity=0;
+    }
     }
     
   }

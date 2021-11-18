@@ -188,6 +188,11 @@ class Asteroid extends BaseObj {
         stroke(255, 255, 255);
         ellipse(-(config[0]/2), -(config[1]/2), exstatus, exstatus);
       }
+      if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<20){ // if laser hits ship, lower health
+      myhealth-=5;
+      x=1200;
+      velocity=0;
+    }
   }
   int getExstatus() {
     return exstatus;
@@ -397,7 +402,7 @@ class Lasers extends Stars{
       }
     }
     if(dist(x,y,Jeremiah.getX(),Jeremiah.getY())<20){ // if laser hits ship, lower health
-      myhealth-=1;
+      myhealth-=5;
       x=1200;
       velocity=0;
     }

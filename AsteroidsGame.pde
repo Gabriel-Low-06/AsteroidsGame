@@ -66,7 +66,7 @@ background(0,0,0);
     if (keyCode==UP) {
       Jeremiah.accelerate(.1); 
     }
-    if (keyCode==ENTER) { //teleports ship to new location\
+    if (keyCode==RETURN) { //teleports ship to new location\
       Jeremiah.hyperspace();
       keyCode=0;
     }

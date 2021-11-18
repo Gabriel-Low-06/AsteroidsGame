@@ -1,6 +1,7 @@
-
 class Spaceship extends Floater {
   protected boolean follower;
+  protected int hit;
+  protected int health;
   Spaceship(int x, int y, boolean followee) {
     myColor = color(254, 254, 254);
     myCenterX=x;
@@ -9,6 +10,8 @@ class Spaceship extends Floater {
     myYspeed=0;
     myPointDirection=-90;
     follower=followee;
+    hit = 0;
+    health=3;
   }
   public void move(){
     myCenterX += myXspeed;    
@@ -16,8 +19,10 @@ class Spaceship extends Floater {
   }
 
   public void show() {
+    if(health>0){
+    hit-=3;
     myPointDirection=myPointDirection%360;
-    fill(myColor);
+    fill(myColor+(constrain(hit,0,100)/8));
     pushMatrix();
     translate((float)myCenterX, (float)myCenterY);
     scale(.75,.75,.75);
@@ -43,9 +48,23 @@ class Spaceship extends Floater {
       fill(255, 0, 0);
       triangle(-40, 7, -40, -7, -57, 0); //draw fire from ship
     }
-    popMatrix()
+    popMatrix();
+    }
   }
+  
+  void hyperspace(){
+    fill(0,0,255);
+    ellipse((float)myCenterX,(float)myCenterY,100,100);
+    myCenterX=(int)(random(0,1100));
+    myCenterY=(int)(random(0,700));
+    myPointDirection=random(0,360);
 
+  }
+  
+  void sethealth(int h){
+    health = h;
+  }
+  int gethealth(){return health;}
   int getX() {
     return (int)myCenterX;
   }
@@ -57,6 +76,9 @@ class Spaceship extends Floater {
   }
   void setY(int y){
     myCenterY=y;
+  }
+  void sethit(int h){
+    hit = h;
   }
   float getTheta() {
     return (float)myPointDirection;
@@ -103,4 +125,3 @@ class Spaceship extends Floater {
     myYspeed*=.94;
   }
 }
-

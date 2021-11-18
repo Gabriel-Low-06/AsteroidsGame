@@ -163,12 +163,14 @@ class Asteroid extends BaseObj {
   protected int exstatus;
   protected int shade;
   protected float config[];
+  protected boolean hityet;
   Asteroid() {
     setrandomly();
     shade=(int)(random(50, 200)); //give asteroid random color, setup, rotation
     float[] loadcon = {(int)(random(0, 30)), (int)(random(0, 30)), (int)(random(25, 75))};
     config=loadcon;
     exstatus=0;
+    hityet = false;
   }
   void show() {
     strokeWeight(1);
@@ -188,10 +190,11 @@ class Asteroid extends BaseObj {
         stroke(255, 255, 255);
         ellipse(-(config[0]/2), -(config[1]/2), exstatus, exstatus);
       }
-      if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<20){ // if laser hits ship, lower health
+      if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<20 && hityet==false){ // if laser hits ship, lower health
       myhealth-=5;
       x=1200;
       velocity=0;
+      hityet = true;
     }
   }
   int getExstatus() {

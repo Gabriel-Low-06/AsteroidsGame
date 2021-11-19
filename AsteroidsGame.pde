@@ -66,11 +66,11 @@ background(0,0,0);
     if (keyCode==UP) {
       Jeremiah.accelerate(.1); 
     }
-    if (keyCode==RETURN) { //teleports ship to new location\
+    if (keyCode==DOWN) { //teleports ship to new location\
       Jeremiah.hyperspace();
       keyCode=0;
     }
-    if (keyCode==DOWN) { //fires lasers
+    if (key==' ') { //fires lasers
       blasts[Lasercount]=new Lasers();
       realLasercount=(constrain(realLasercount+1,0,40));
       Lasercount+=1;

@@ -85,7 +85,7 @@ background(0,0,0);
         Lasercount=0;
       }
       }
-      keyCode=0;
+      key=0;
     }
   } else {
     Jeremiah.slow();

@@ -78,11 +78,13 @@ background(0,0,0);
         Lasercount=0;
       }
       for(int i=0; i<6;i++){
+      if(Fleet[i].gethealth>0){
       blasts[Lasercount]=new Lasers(Fleet[i]);
       realLasercount=(constrain(realLasercount+1,0,40));
       Lasercount+=1;
       if (Lasercount>39) {
         Lasercount=0;
+      }
       }
       }
       key='a';

@@ -2,24 +2,23 @@ int complexity=25;
 int Lasercount=0; //how many lasers to display
 int realLasercount=0;
 int myhealth = 100; //health of ship
-
+boolean playing=true;
 Celestial[] systems = new Celestial[complexity];
-BaseObj[] rocks = new BaseObj[15]; //declare all elements
+ArrayList<BaseObj> rocks = new ArrayList<BaseObj>(); //declare all elements
 Stars[] streaks = new Stars[30];
 Lasers[]blasts=new Lasers[40];
 Spaceship Jeremiah =new Spaceship(550,40, false);
 Spaceship[] Fleet = new Spaceship[6];
 
-void setup() {
-  size(1100, 700, P3D);
-  for (int i=0; i<30; i++) { //initialize all elements
+public void init(){
+    for (int i=0; i<30; i++) { //initialize all elements
     streaks[i] = new Stars();
   }
   for (int q=0; q<15; q++) {
     if (q<13) {
-      rocks[q]=new Asteroid();
+      rocks.add(new Asteroid());
     } else {
-      rocks[q]=new Enemy();
+      rocks.add(new Enemy());
     }
   }
   for (int i=0; i<complexity; i++) {
@@ -30,7 +29,16 @@ void setup() {
   }
 }
 
+void setup() {
+  size(1100, 700, P3D);
+  init();
+}
+
 void draw() {
+if(playing==true){
+  if(millis()%1000<2){
+    System.out.println(rocks.size());
+  }
 background(0,0,0);
   pushMatrix();
   translate(-4550, -2900, -5000); //move stars and background behind asteroid
@@ -47,14 +55,17 @@ background(0,0,0);
   }
   popMatrix();
 
-  for (int q=0; q<15; q++) {    
-    if (rocks[q].getExstatus()>0) { //if hit, explode asteroids
-      rocks[q].explode();
+  for (int q=0; q<rocks.size(); q++) {    
+    if (rocks.get(q).getExstatus()>0) { //if hit, explode asteroids
+      rocks.get(q).explode();
     }
-    if (rocks[q].getExstatus()<400) {
-       rocks[q].render(); //draw asteroids and enemy ships
-      rocks[q].extrastuff(q); //steer enemy ship
-    }
+       rocks.get(q).render(); //draw asteroids and enemy ships
+      rocks.get(q).extrastuff(q); //steer enemy ship
+      if (rocks.get(q).getExstatus()>400) {
+        rocks.remove(q);
+        q-=1;
+     }
+
   }
   if (keyPressed) {
     if (keyCode==RIGHT) { //controls movement of ship
@@ -78,7 +89,7 @@ background(0,0,0);
         Lasercount=0;
       }
       for(int i=0; i<6;i++){
-      if(Fleet[i].gethealth>0){
+      if(Fleet[i].gethealth()>0){
       blasts[Lasercount]=new Lasers(Fleet[i]);
       realLasercount=(constrain(realLasercount+1,0,40));
       Lasercount+=1;
@@ -117,6 +128,16 @@ background(0,0,0);
   rect(890+myhealth,30,100-myhealth,20);  
   textSize(30);
   text(myhealth, 1020, 35); //display health
+  
+  if(myhealth<5 || rocks.size()<2){
+    playing=false;
+  }
+  
+}else{
+  background(0,0,0);
+  fill(255,255,255);
+  text("Game Over: Your score is "+ myhealth, 150,300);
+}
 }
 
 class BaseObj {
@@ -214,7 +235,7 @@ class Celestial {
     fill(tint);
     ellipse(x, y, s, s);
     if(mass>200){
-      PImage Sun = loadImage("Psun.png");
+      //PImage Sun = loadImage("Psun.png");
       fill(255,255,0,100);
       ellipse(x,y,s+18,s+18);
       //fill(255, 100, 50,100);
@@ -271,8 +292,8 @@ class Lasers extends Stars{
     
   }
   Lasers(int sender, float angle){ //constructor for enemy lasers
-    x=rocks[sender].loc[0];
-   y=rocks[sender].loc[1];
+    x=rocks.get(sender).loc[0];
+   y=rocks.get(sender).loc[1];
    velocity=10;
    mycolor=color(200,0,0);
    theta=angle;
@@ -287,11 +308,11 @@ class Lasers extends Stars{
   }
   
   void scan(){
-    for(int i=0; i<15; i++){ //check to see if laser hit asteroid, if so, tell asteroid to blow up
-      int x1 = (int)rocks[i].getLoc()[0];
-      int y1 = (int)rocks[i].getLoc()[1];
-      if(dist(x,y,x1,y1)<50 &&rocks[i].getExstatus()==0 &&(i<13||mycolor!=color(200,0,0))){
-        rocks[i].setExstatus(1);
+    for(int i=0; i<rocks.size(); i++){ //check to see if laser hit asteroid, if so, tell asteroid to blow up
+      int x1 = (int)rocks.get(i).getLoc()[0];
+      int y1 = (int)rocks.get(i).getLoc()[1];
+      if(dist(x,y,x1,y1)<50 &&rocks.get(i).getExstatus()==0 &&(i<13||mycolor!=color(200,0,0))){
+        rocks.get(i).setExstatus(1);
         x=1200;
         velocity=0;
       }

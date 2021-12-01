@@ -117,7 +117,6 @@ void draw() {
       if (x>1100 || y>700 ||x<0|| y<0) {
         blasts.remove(z);
         z-=1;
-        System.out.println(blasts.size());
       }
     }
     strokeWeight(0);

@@ -30,7 +30,7 @@ class Asteroid extends BaseObj {
         ellipse(-(config[0]/2), -(config[1]/2), exstatus, exstatus);
       }
       if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())<60 && hityet==false){ // if laser hits ship, lower health
-      myhealth-=5;
+      myhealth-=15;
       hityet = true;
       Jeremiah.sethit(50);
     }else if(dist(loc[0],loc[1],Jeremiah.getX(),Jeremiah.getY())>60 && hityet==true){
@@ -90,13 +90,8 @@ class Enemy extends BaseObj {
       vel[0]-= .6-xshift;
       vel[1]-= .6-yshift;
     }
-    if (millis()%300<5) { //occasionally, fire lasers at ship
-      blasts[Lasercount]=new Lasers(value, angle);
-      realLasercount=(constrain(realLasercount+1, 0, 40));
-      Lasercount+=1;
-      if (Lasercount>39) {
-        Lasercount=0;
-      }
+    if (millis()%1500<5) { //occasionally, fire lasers at ship
+      blasts.add(new Lasers(value, angle));
     }
     for(int i=0; i<3; i++){vel[i]=constrain(vel[i],-3,3);}
   }

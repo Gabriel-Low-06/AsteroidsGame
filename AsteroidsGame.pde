@@ -1,14 +1,15 @@
 static int complexity=25;
 int myhealth = 100; //health of ship
-boolean playing=true;
+int playing=0;
 int timer=0;
+int globalspeed=0;
 
-Celestial[] systems = new Celestial[complexity];
 ArrayList<BaseObj> rocks = new ArrayList<BaseObj>(); //declare all elements
-Stars[] streaks = new Stars[30];
 ArrayList <Lasers>blasts = new ArrayList<Lasers>();
-Spaceship Jeremiah =new Spaceship(550, 40, false);
+Celestial[] systems = new Celestial[complexity];
+Stars[] streaks = new Stars[30];
 Spaceship[] Fleet = new Spaceship[6];
+Spaceship Jeremiah;
 
 public void init() {
   for (int i=0; i<30; i++) { //initialize all elements
@@ -27,7 +28,7 @@ public void init() {
   for (int i=0; i<6; i++) {
     Fleet[i]=new Spaceship((i%3)*100+250, ((i/3)+1)*100+50, true);
   }
-  playing=true;
+  playing=1;
   myhealth=100;
   Jeremiah =new Spaceship(550, 40, false);
 }
@@ -35,13 +36,11 @@ public void init() {
 void setup() {
   size(1100, 700, P3D);
   init();
+  playing=0;
 }
 
 void draw() {
-  if (playing==true) {
-    if (millis()%1000<2) {
-      System.out.println(rocks.size());
-    }
+  if (playing==1) {
     background(0, 0, 0);
     pushMatrix();
     translate(-4550, -2900, -5000); //move stars and background behind asteroid
@@ -64,7 +63,7 @@ void draw() {
       }
       rocks.get(q).render(); //draw asteroids and enemy ships
       rocks.get(q).extrastuff(q); //steer enemy ship
-      if (rocks.get(q).getExstatus()>400) {
+      if (rocks.get(q).getExstatus()>400) { //if Asteroid is exploded, remove from ArrayList
         rocks.remove(q);
         q-=1;
       }
@@ -86,93 +85,107 @@ void draw() {
       if (key==' ') { //fires lasers
         blasts.add(new Lasers());
         for (int i=0; i<6; i++) {
-          if (Fleet[i].gethealth()>0) {
-            blasts.add(new Lasers(Fleet[i]));
+          if (Fleet[i].gethealth()>0) { //For each ship in the fleet that is still alive, do:
+            blasts.add(new Lasers(Fleet[i])); //Adds new laser to arrayList
           }
         }
       }
-      key='a';
+      key='a'; //only fire one laser at a time
     } else {
-      Jeremiah.slow();
+      Jeremiah.slow(); //Decelerate ship if not actively moving
     }
 
-
-    Jeremiah.show(); 
+    Jeremiah.show(); //Draw and move main ship, confine to boundaries
     Jeremiah.move();  
     Jeremiah.setX(constrain(Jeremiah.getX(), 50, 1050));
     Jeremiah.setY(constrain(Jeremiah.getY(), 50, 650));
 
     for (int i=0; i<6; i++) {
-      Fleet[i].show();
+      Fleet[i].show(); //Draw surrounding fleet and have it follow main ship
       Fleet[i].follow(Jeremiah, (int)(((i+2)%2*100*((i+2)/2))-(50*((i+2)/2))), ((i/2)+1)*80);
       Fleet[i].move();
     }
 
     for (int z=0; z<blasts.size(); z++) { //draw lasers
-      blasts.get(z).show();
-      blasts.get(z).scan();
+      blasts.get(z).show(); //show lasers
+      blasts.get(z).scan(); //check if lasers have hit anythign
       float x=blasts.get(z).getX();
       float y=blasts.get(z).getY();
-
-      if (x>1100 || y>700 ||x<0|| y<0) {
+      if (x>1100 || y>700 ||x<0|| y<0) { //if lasers fly out of boundaries, remove from arraylist
         blasts.remove(z);
         z-=1;
+        System.out.println(blasts.size());
       }
     }
+
     strokeWeight(0);
     fill(300, 0, 0);
-    rect(890, 30, (int)myhealth, 20);
+    rect(890, 30, (int)myhealth, 20); //health bar 
     fill(300, 300, 300);  
-    rect(890+myhealth, 30, 100-myhealth, 20);  
+    rect(890+myhealth, 30, 100-myhealth, 20);//white box surrounding health bar
     textSize(30);
     text(myhealth, 1020, 35); //display health
 
     if (myhealth<5 || rocks.size()<2) {
-      playing=false;
+      playing=2;
       timer=0;
     }
-  } else {
-    timer+=1;
-    background(0, 0, 0);
-    fill(255, 255, 255);
-    textSize(80);
-    text("Game Over: ",150,250);
-    text("Your score is "+ myhealth, 150, 330);
+  } else { //display end screen
+    if (playing==2) {
+      timer+=1;
+      background(0, 0, 0);
+      fill(255, 255, 255);
+      textSize(80);
+      text("Game Over: ", 80, 250);
+      text("Your score is "+ myhealth, 80, 330);
+    }
+    if (playing==0) {//display loadscreen
+      timer=101;
+      background(0, 0, 0);
+      fill(255, 255, 255);
+      textSize(50);
+      text("Welcome to Asteroids!", 100, 250);
+      textSize(25);
+      text("Use the Arrow Keys to move Around:", 100, 350);
+      text("Use Space For Shooting and Down for Hyperspace", 100, 390);
+      text("Mission: Destroy All Asteroids and UFOS", 100, 425);
+    }
+
     int tinty = abs(300-(millis()%600));
-        int tinty2 = abs(900-(millis()%1800))/3;
-        tinty=constrain(tinty, 10, 290);
-        tinty2=constrain(tinty2, 10, 290);
-        fill(tinty2, 300-tinty, tinty);
-        textSize(50);
-        text("Click Any Key to Play Again!", 100, 600);
-    if(keyPressed==true && timer>100){
-      init();
+    int tinty2 = abs(900-(millis()%1800))/3;
+    tinty=constrain(tinty, 10, 290); //weird code to change color of text
+    tinty2=constrain(tinty2, 10, 290);
+    fill(tinty2, 300-tinty, tinty);
+    textSize(50);
+    text("Press Any Key to Play!", 100, 600);
+    if (keyPressed==true && timer>100) {
+      init(); //reset game
     }
   }
 }
 
-class BaseObj {
-  protected float[] loc;
-  protected float[] vel;
-  protected float[] rot;
-  protected float[] tor;
+class BaseObj { //class for 3D object, inherited by asteroids and UFOs
+  protected float[] loc; //stores location (x, y, and z coordinates)
+  protected float[] vel;// stores x, y, and z, velocity
+  protected float[] rot; //stores x, y, and z, rotation
+  protected float[] tor; //stores rotational velocities
 
-  void render() {
-    pushMatrix();
+  void render() { //code to place an object in 3d space
+    pushMatrix(); 
     translate(loc[0], loc[1], loc[2]);
-    rotateX(rot[0]);
+    rotateX(rot[0]); //rotate and translate according to variables
     rotateY(rot[1]);
     rotateZ(rot[2]);
     for (int i=0; i<3; i++) {
-      loc[i]+=vel[i]; 
+      loc[i]+=vel[i]; //update position and rotation based on velocity
       rot[i]+=tor[i];
     }
-    show();
+    show(); //display based on whatever is in inherited objects "show" code
     popMatrix();
   }
 
   public void setrandomly() {
-    float[] locset = {random(0, 1100), random(0, 700), random(-100, 100)}; 
+    float[] locset = {random(0, 1100), random(0, 700), random(-100, 100)}; //assign random values 
     loc=locset;
     float[] velset = {random(-1, 1), random(-1, 1), random(0, 0)}; 
     vel=velset;
@@ -182,10 +195,10 @@ class BaseObj {
     tor=torset;
   }
 
-  void show() {
+  void show() { //empty stand in for show code
   }
 
-  float[] getLoc() {
+  float[] getLoc() { //tons of getters and setters for all the encapsulated variables
     return loc;
   }
   float[] getVel() {
@@ -221,7 +234,7 @@ class BaseObj {
   }
 }
 
-float speediness=.01;
+float speediness=.01; //static variable to control how fast planets move
 
 class Celestial {
   private int s, tint, independent;

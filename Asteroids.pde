@@ -11,6 +11,27 @@ class Asteroid extends BaseObj {
     exstatus=0;
     hityet = false;
   }
+  Asteroid(boolean far) { //second constructor for starfield
+    shade=(int)(random(50, 200)); //give asteroid random color, setup, rotation
+    float[] loadcon = {(int)(random(0, 50)), (int)(random(0, 50)), (int)(random(25, 75))};
+    float[] loadrot = {random(0, 8), random(0, 8), random(0, 8)};
+    float[] loadtor = {random(-.1, .1), random(-.1, .1), random(-.1, .1)};
+    float[]loadvel={0,0,0};
+    float[] loadcoord = {(int)(random(0, 1200)), (int)(random(0, 800)), (int)(random(-5000, 0))};
+    if (far==true) { //if its respawning, respawn in middle
+      loadcoord[2]=(int)random(-7000, -6000);
+    }
+    rot=loadrot; //initalize variables from randomly generated
+    tor=loadtor;
+    loc=loadcoord;
+    config=loadcon;
+    vel=loadvel;
+  }
+  void starfield(){
+        vel[2]=(int)globalspeed; //update velocity based on global speed
+
+  }
+    
   void show() {
     strokeWeight(1);
     stroke(0,0,0);

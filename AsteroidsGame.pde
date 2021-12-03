@@ -12,6 +12,7 @@ Spaceship[] Fleet = new Spaceship[6];
 Spaceship Jeremiah;
 
 public void init() {
+  blasts = new ArrayList<Lasers>();
   for (int i=0; i<30; i++) { //initialize all elements
     streaks[i] = new Stars();
   }

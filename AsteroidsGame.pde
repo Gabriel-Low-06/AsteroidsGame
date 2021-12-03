@@ -373,7 +373,7 @@ class Celestial {
 }
 
 class Lasers extends Stars {
-  private float velocity, theta;
+  //private float velocity, theta;
   Lasers() { //constructor for good guy lasers
     velocity=Jeremiah.getV()+10;
     theta=Jeremiah.getTheta()*(float)Math.PI/180;

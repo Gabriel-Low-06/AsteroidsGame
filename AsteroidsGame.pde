@@ -2,7 +2,7 @@ static int complexity=25;
 int myhealth = 100; //health of ship
 int playing=0;
 int timer=0;
-int globalspeed=0;
+int globalspeed=00;
 
 ArrayList<BaseObj> rocks = new ArrayList<BaseObj>(); //declare all elements
 ArrayList <Lasers>blasts = new ArrayList<Lasers>();
@@ -32,9 +32,17 @@ public void init() {
   myhealth=100;
   Jeremiah =new Spaceship(550, 40, false);
 }
+Asteroid[] openrocks = new Asteroid[15]; //declare asteroids and stars
+Stars[] openstreaks = new Stars[30];
 
 void setup() {
   size(1100, 700, P3D);
+  for (int i=0; i<30; i++) {
+    openstreaks[i] = new Stars();
+  }
+  for (int q=0; q<15; q++) {
+    openrocks[q]=new Asteroid(false);
+  }
   init();
   playing=0;
 }
@@ -138,6 +146,9 @@ void draw() {
       textSize(80);
       text("Game Over: ", 80, 250);
       text("Your score is "+ myhealth, 80, 330);
+      if (keyPressed==true && timer>100) {
+        init(); //reset game
+      }
     }
     if (playing==0) {//display loadscreen
       timer=101;
@@ -149,18 +160,57 @@ void draw() {
       text("Use the Arrow Keys to move Around:", 100, 350);
       text("Use Space For Shooting and Down for Hyperspace", 100, 390);
       text("Mission: Destroy All Asteroids and UFOS", 100, 425);
+      if (keyPressed==true && timer>100) {
+        //init(); //reset game
+        playing=3;
+      }
     }
+    if (playing!=3) {
 
-    int tinty = abs(300-(millis()%600));
-    int tinty2 = abs(900-(millis()%1800))/3;
-    tinty=constrain(tinty, 10, 290); //weird code to change color of text
-    tinty2=constrain(tinty2, 10, 290);
-    fill(tinty2, 300-tinty, tinty);
-    textSize(50);
-    text("Press Any Key to Play!", 100, 600);
-    if (keyPressed==true && timer>100) {
-      init(); //reset game
-    }
+      int tinty = abs(300-(millis()%600));
+      int tinty2 = abs(900-(millis()%1800))/3;
+      tinty=constrain(tinty, 10, 290); //weird code to change color of text
+      tinty2=constrain(tinty2, 10, 290);
+      fill(tinty2, 300-tinty, tinty);
+      textSize(50);
+      text("Press Any Key to Play!", 100, 600);
+      
+    } if(playing==3||playing==0) { //starfield transition
+      if (globalspeed>300 && globalspeed<500) { //break barrier
+        globalspeed=600;
+      }
+      if(playing==3){
+      globalspeed+=1;
+      }
+      pushMatrix();
+      translate(-4550, -2900, -5000); //move stars and background behind asteroid
+      scale(9.25, 9.25);
+      fill(0, 0, 0, 70); //create blurred effect while refreshing frame
+      noStroke();
+      rect(0, 0, 1100, 700);
+      for (int i=0; i<30; i++) { //draw stars
+        openstreaks[i].paint();
+        if (openstreaks[i].x>1100||openstreaks[i].x<0||openstreaks[i].y>700||openstreaks[i].y<0) {
+
+          openstreaks[i] = new Stars();
+        }
+      }
+      popMatrix();
+
+      for (int q=0; q<15; q++) {
+        if (globalspeed<300) {
+          openrocks[q].render(); //draw asteroids
+          openrocks[q].starfield();
+        }
+        if (openrocks[q].getLoc()[2]>500) {
+          openrocks[q]=new Asteroid(true);
+        }
+      }
+      if(globalspeed>700){
+        playing=1;
+        globalspeed=0;
+      }
+    } //end of starfield transition code
   }
 }
 

@@ -5,7 +5,7 @@ int timer=0;
 int globalspeed=00;
 
 ArrayList<BaseObj> rocks = new ArrayList<BaseObj>(); //declare all elements
-ArrayList <Lasers>blasts = new ArrayList<Lasers>();
+ArrayList <Lasers>blasts;
 Celestial[] systems = new Celestial[complexity];
 Stars[] streaks = new Stars[30];
 Spaceship[] Fleet = new Spaceship[6];
@@ -117,13 +117,13 @@ void draw() {
 
     for (int z=0; z<blasts.size(); z++) { //draw lasers
       blasts.get(z).show(); //show lasers
-      blasts.get(z).scan(); //check if lasers have hit anythign
-      float x=blasts.get(z).getX();
-      float y=blasts.get(z).getY();
+      blasts.get(z).scan(); //check if lasers have hit anything
+      float x = blasts.get(z).getX();
+      float y = blasts.get(z).getY();
       if (x>1100 || y>700 ||x<0|| y<0) { //if lasers fly out of boundaries, remove from arraylist
         blasts.remove(z);
         z-=1;
-        System.out.println(blasts.size());
+        //System.out.println(blasts.size());
       }
     }
 

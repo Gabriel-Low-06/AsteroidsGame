@@ -6,16 +6,16 @@ class Asteroid extends BaseObj {
   Asteroid() {
     setrandomly();
     shade=(int)(random(50, 200)); //give asteroid random color, setup, rotation
-    float[] loadcon = {(int)(random(0, 30)), (int)(random(0, 30)), (int)(random(25, 75))};
+    float[] loadcon = {(int)(random(0, 20)), (int)(random(0, 20)), (int)(random(25, 75))};
     config=loadcon;
     exstatus=0;
     hityet = false;
   }
   Asteroid(boolean far) { //second constructor for starfield
     shade=(int)(random(50, 200)); //give asteroid random color, setup, rotation
-    float[] loadcon = {(int)(random(0, 50)), (int)(random(0, 50)), (int)(random(25, 75))};
+    float[] loadcon = {(int)(random(0, 20)), (int)(random(0, 20)), (int)(random(25, 75))};
     float[] loadrot = {random(0, 8), random(0, 8), random(0, 8)};
-    float[] loadtor = {random(-.1, .1), random(-.1, .1), random(-.1, .1)};
+    float[] loadtor = {random(-.01, .01), random(-.01, .01), random(-.01, .01)};
     float[]loadvel={0,0,0};
     float[] loadcoord = {(int)(random(0, 1200)), (int)(random(0, 800)), (int)(random(-5000, 0))};
     if (far==true) { //if its respawning, respawn in middle

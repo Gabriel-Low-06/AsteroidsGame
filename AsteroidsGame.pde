@@ -120,7 +120,7 @@ void draw() {
       blasts.get(z).scan(); //check if lasers have hit anything
       float x = blasts.get(z).getX();
       float y = blasts.get(z).getY();
-      if (x>1100 || y>700 ||x<0|| y<0) { //if lasers fly out of boundaries, remove from arraylist
+      if ((x>1100 || y>700 ||x<0|| y<0)&&blasts.get(z).getA()>100) { //if lasers fly out of boundaries, remove from arraylist
         blasts.remove(z);
         z-=1;
         //System.out.println(blasts.size());
@@ -145,8 +145,13 @@ void draw() {
       background(0, 0, 0);
       fill(255, 255, 255);
       textSize(80);
-      text("Game Over: ", 80, 250);
-      text("Your score is "+ myhealth, 80, 330);
+      if (myhealth>0) {
+        text("You Win! ", 80, 250);
+        text("Your score is "+ myhealth, 80, 330);
+      } else {
+        text("Game Over", 80, 250);
+        text("Better Luck Next Time", 80, 330);
+      }
       if (keyPressed==true && timer>100) {
         init(); //reset game
       }
@@ -161,6 +166,7 @@ void draw() {
       text("Use the Arrow Keys to move Around:", 100, 350);
       text("Use Space For Shooting and Down for Hyperspace", 100, 390);
       text("Mission: Destroy All Asteroids and UFOS", 100, 425);
+      text("If you crash into too many Asteroids, its GAME OVER ", 100, 465);
       if (keyPressed==true && timer>100) {
         //init(); //reset game
         playing=3;
@@ -175,13 +181,13 @@ void draw() {
       fill(tinty2, 300-tinty, tinty);
       textSize(50);
       text("Press Any Key to Play!", 100, 600);
-      
-    } if(playing==3||playing==0) { //starfield transition
+    } 
+    if (playing==3||playing==0) { //starfield transition
       if (globalspeed>300 && globalspeed<500) { //break barrier
         globalspeed=600;
       }
-      if(playing==3){
-      globalspeed+=1;
+      if (playing==3) {
+        globalspeed+=1;
       }
       pushMatrix();
       translate(-4550, -2900, -5000); //move stars and background behind asteroid
@@ -207,7 +213,7 @@ void draw() {
           openrocks[q]=new Asteroid(true);
         }
       }
-      if(globalspeed>700){
+      if (globalspeed>700) {
         playing=1;
         globalspeed=0;
       }
@@ -373,8 +379,10 @@ class Celestial {
 }
 
 class Lasers extends Stars {
+  private int age=0;
   //private float velocity, theta;
   Lasers() { //constructor for good guy lasers
+    age=0;
     velocity=Jeremiah.getV()+10;
     theta=Jeremiah.getTheta()*(float)Math.PI/180;
     x=Jeremiah.getX()+(cos(theta)*20);
@@ -383,6 +391,7 @@ class Lasers extends Stars {
     s=10;
   }
   Lasers(Spaceship take) { //constructor for backup fleet
+    age=0;
     velocity=Jeremiah.getV()+10;
     theta=take.getTheta()*(float)Math.PI/180;
     x=take.getX()+(cos(theta)*20);
@@ -391,6 +400,7 @@ class Lasers extends Stars {
     s=6;
   }
   Lasers(int sender, float angle) { //constructor for enemy lasers
+    age=0;
     x=rocks.get(sender).loc[0];
     y=rocks.get(sender).loc[1];
     velocity=10;
@@ -403,6 +413,7 @@ class Lasers extends Stars {
     ellipse(x, y, s, s);
     x+=cos(theta)*velocity;
     y+=sin(theta)*velocity;
+    age+=1;
   }
 
   float getX() {
@@ -410,6 +421,9 @@ class Lasers extends Stars {
   }
   float getY() {
     return y;
+  }
+  int getA() {
+    return age;
   }
 
   void scan() {

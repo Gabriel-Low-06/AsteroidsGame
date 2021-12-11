@@ -66,6 +66,45 @@ void draw() {
     }
     popMatrix();
 
+    Jeremiah.show(); //Draw and move main ship, confine to boundaries
+    Jeremiah.move();  
+    Jeremiah.setX(constrain(Jeremiah.getX(), 50, 1050));
+    Jeremiah.setY(constrain(Jeremiah.getY(), 50, 650));
+
+    for (int i=0; i<6; i++) {
+      Fleet[i].show(); //Draw surrounding fleet and have it follow main ship
+      Fleet[i].follow(Jeremiah, (int)(((i+2)%2*100*((i+2)/2))-(50*((i+2)/2))), ((i/2)+1)*80);
+      Fleet[i].move();
+    }
+
+    for (int z=0; z<blasts.size(); z++) { //draw lasers
+      blasts.get(z).show(); //show lasers
+      blasts.get(z).scan(); //check if lasers have hit anything
+      float x = blasts.get(z).getX();
+      float y = blasts.get(z).getY();
+      if ((x>1100 || y>700 ||x<0|| y<0)&&blasts.get(z).getA()>100) { //if lasers fly out of boundaries, remove from arraylist
+        blasts.remove(z);
+        z-=1;
+        //System.out.println(blasts.size());
+      }
+    }
+
+    strokeWeight(0);
+    fill(300, 0, 0);
+    rect(890, 30, (int)myhealth, 20); //health bar 
+    fill(300, 300, 300);  
+    rect(890+myhealth, 30, 100-myhealth, 20);//white box surrounding health bar
+    textSize(30);
+    text(myhealth, 1020, 35); //display health
+
+    if (myhealth<5 || rocks.size()<2) {
+      playing=2;
+      timer=0;
+    }
+    
+      directionalLight(10000,10000,10000,1,1,-.2);
+
+    
     for (int q=0; q<rocks.size(); q++) {    
       if (rocks.get(q).getExstatus()>0) { //if hit, explode asteroids
         rocks.get(q).explode();
@@ -104,41 +143,7 @@ void draw() {
       Jeremiah.slow(); //Decelerate ship if not actively moving
     }
 
-    Jeremiah.show(); //Draw and move main ship, confine to boundaries
-    Jeremiah.move();  
-    Jeremiah.setX(constrain(Jeremiah.getX(), 50, 1050));
-    Jeremiah.setY(constrain(Jeremiah.getY(), 50, 650));
-
-    for (int i=0; i<6; i++) {
-      Fleet[i].show(); //Draw surrounding fleet and have it follow main ship
-      Fleet[i].follow(Jeremiah, (int)(((i+2)%2*100*((i+2)/2))-(50*((i+2)/2))), ((i/2)+1)*80);
-      Fleet[i].move();
-    }
-
-    for (int z=0; z<blasts.size(); z++) { //draw lasers
-      blasts.get(z).show(); //show lasers
-      blasts.get(z).scan(); //check if lasers have hit anything
-      float x = blasts.get(z).getX();
-      float y = blasts.get(z).getY();
-      if ((x>1100 || y>700 ||x<0|| y<0)&&blasts.get(z).getA()>100) { //if lasers fly out of boundaries, remove from arraylist
-        blasts.remove(z);
-        z-=1;
-        //System.out.println(blasts.size());
-      }
-    }
-
-    strokeWeight(0);
-    fill(300, 0, 0);
-    rect(890, 30, (int)myhealth, 20); //health bar 
-    fill(300, 300, 300);  
-    rect(890+myhealth, 30, 100-myhealth, 20);//white box surrounding health bar
-    textSize(30);
-    text(myhealth, 1020, 35); //display health
-
-    if (myhealth<5 || rocks.size()<2) {
-      playing=2;
-      timer=0;
-    }
+    
   } else { //display end screen
     if (playing==2) {
       timer+=1;
